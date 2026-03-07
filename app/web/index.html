@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learning Assistant</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <h1>Learning Assistant</h1>
+      <p>Add resources, let the backend chunk/embed them, then ask anything.</p>
+    </section>
+
+    <section class="card">
+      <h2>Add Resource</h2>
+      <form id="resource-form">
+        <label for="source-type">Source Type</label>
+        <select id="source-type" name="source_type">
+          <option value="url">Any URL</option>
+          <option value="rss">RSS/Atom Feed</option>
+          <option value="youtube">YouTube</option>
+          <option value="twitter">Twitter/X</option>
+          <option value="hackernews">Hacker News</option>
+        </select>
+
+        <label for="resource-input">URL / Handle / ID</label>
+        <input id="resource-input" name="resource_input" placeholder="Paste URL or handle" required />
+
+        <label for="limit-input">Limit</label>
+        <input id="limit-input" name="limit" type="number" min="1" max="50" value="5" />
+
+        <button type="submit">Ingest</button>
+      </form>
+      <pre id="ingest-result"></pre>
+    </section>
+
+    <section class="card">
+      <h2>Ask Questions</h2>
+      <form id="ask-form">
+        <label for="question-input">Question</label>
+        <input id="question-input" name="question" placeholder="What should I learn next?" required />
+
+        <label for="topk-input">Top K</label>
+        <input id="topk-input" name="top_k" type="number" min="1" max="10" value="4" />
+
+        <button type="submit">Ask Agent</button>
+      </form>
+      <pre id="ask-result"></pre>
+    </section>
+
+    <section class="card">
+      <h2>Recent Content</h2>
+      <button id="refresh-content" type="button">Refresh</button>
+      <pre id="content-result"></pre>
+    </section>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>

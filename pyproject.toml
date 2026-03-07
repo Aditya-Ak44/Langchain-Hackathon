@@ -1,0 +1,30 @@
+[project]
+name = "langchain-hackathon"
+version = "0.1.0"
+description = "Modern async content aggregator scaffold with FastAPI"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.116.0",
+    "feedparser>=6.0.11",
+    "httpx>=0.28.0",
+    "langchain>=0.3.0",
+    "langchain-ollama>=0.3.0",
+    "langchain-openai>=1.1.10",
+    "langsmith>=0.4.0",
+    "pydantic-settings>=2.10.0",
+    "sentence-transformers>=5.1.0",
+    "surrealdb>=1.0.0",
+    "uvicorn[standard]>=0.35.0",
+    "youtube-transcript-api>=1.2.3",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+package = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
