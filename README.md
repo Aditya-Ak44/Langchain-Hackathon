@@ -8,7 +8,7 @@ Now extended as a learning assistant: ingest resources, chunk/embed content, and
 ```bash
 uv sync
 cp .env.example .env
-uv run uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
+uv run --no-project uvicorn app.main:app --host 0.0.0.0 --port 8080
 ```
 
 ## Health endpoint

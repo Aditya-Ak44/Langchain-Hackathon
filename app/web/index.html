@@ -1,61 +1,180 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Learning Assistant</title>
-  <link rel="stylesheet" href="/static/styles.css" />
-</head>
-<body>
-  <main class="container">
-    <section class="hero">
-      <h1>Learning Assistant</h1>
-      <p>Add resources, let the backend chunk/embed them, then ask anything.</p>
-    </section>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Graph Mind</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <svg
+            xmlns="http://www.w3.org/20svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="logo-icon"
+          >
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+          </svg>
+          <h2>Graph Mind</h2>
+        </div>
+        <nav class="sidebar-nav">
+          <button id="nav-chat" class="nav-btn active">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+              ></path>
+            </svg>
+            Chat
+          </button>
+          <button id="nav-interests" class="nav-btn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            Our Interests
+          </button>
+        </nav>
+      </aside>
 
-    <section class="card">
-      <h2>Add Resource</h2>
-      <form id="resource-form">
-        <label for="source-type">Source Type</label>
-        <select id="source-type" name="source_type">
-          <option value="url">Any URL</option>
-          <option value="rss">RSS/Atom Feed</option>
-          <option value="youtube">YouTube</option>
-          <option value="twitter">Twitter/X</option>
-          <option value="hackernews">Hacker News</option>
-        </select>
+      <main class="main-content">
+        <section id="view-chat" class="view active">
+          <div class="chat-container">
+            <div id="chat-history" class="chat-history">
+              <div class="message ai-message">
+                <div class="avatar ai-avatar">AI</div>
+                <div class="message-content">
+                  <div class="text">Hello! I am your Hive Mind. Ask me anything about the resources we've collected.</div>
+                </div>
+              </div>
+            </div>
+            <div id="suggestion-chip" class="suggestion-container">
+              <div class="suggestion-card">
+                <p>
+                  Do you want me to summarise the saved resources for this week?
+                </p>
+                <div class="suggestion-btns">
+                  <button id="btn-suggest-yes" class="btn-suggest">
+                    Yes, please
+                  </button>
+                  <button id="btn-suggest-no" class="btn-suggest secondary">
+                    No thanks
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="chat-input-wrapper">
+              <form id="ask-form" class="chat-form">
+                <textarea
+                  id="question-input"
+                  placeholder="Ask a question..."
+                  rows="1"
+                  required
+                ></textarea>
+                <button type="submit" id="send-btn" class="send-btn">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
 
-        <label for="resource-input">URL / Handle / ID</label>
-        <input id="resource-input" name="resource_input" placeholder="Paste URL or handle" required />
+        <section id="view-interests" class="view hidden">
+          <div class="interests-header">
+            <h2>Our Interests</h2>
+            <button id="btn-open-add" class="btn-primary">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Add Resource
+            </button>
+          </div>
+          <div id="cards-container" class="cards-grid"></div>
+        </section>
+      </main>
+    </div>
 
-        <label for="limit-input">Limit</label>
-        <input id="limit-input" name="limit" type="number" min="1" max="50" value="5" />
+    <div id="add-modal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Add New Resource</h3>
+          <button id="btn-close-modal" class="btn-close">&times;</button>
+        </div>
+        <form id="resource-form" class="modal-form">
+          <div class="form-group">
+            <label for="source-type">Source Type</label>
+            <select id="source-type" name="source_type">
+              <option value="youtube">YouTube URL</option>
+              <option value="rss">RSS/Atom Feed</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="resource-input">URL</label>
+            <input
+              id="resource-input"
+              name="resource_input"
+              placeholder="https://..."
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            class="btn-primary btn-full"
+            id="ingest-submit-btn"
+          >
+            Ingest Resource
+          </button>
+          <div id="ingest-result" class="status-msg"></div>
+        </form>
+      </div>
+    </div>
 
-        <button type="submit">Ingest</button>
-      </form>
-      <pre id="ingest-result"></pre>
-    </section>
-
-    <section class="card">
-      <h2>Ask Questions</h2>
-      <form id="ask-form">
-        <label for="question-input">Question</label>
-        <input id="question-input" name="question" placeholder="What should I learn next?" required />
-
-        <label for="topk-input">Top K</label>
-        <input id="topk-input" name="top_k" type="number" min="1" max="10" value="4" />
-
-        <button type="submit">Ask Agent</button>
-      </form>
-      <pre id="ask-result"></pre>
-    </section>
-
-    <section class="card">
-      <h2>Recent Content</h2>
-      <button id="refresh-content" type="button">Refresh</button>
-      <pre id="content-result"></pre>
-    </section>
-  </main>
-  <script src="/static/app.js"></script>
-</body>
+    <script src="/static/app.js"></script>
+  </body>
 </html>
